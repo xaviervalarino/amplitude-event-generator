@@ -1,0 +1,18 @@
+
+- Table component
+- Fetch table data from amplitude
+  - Parse and place into state -> useReducer (probably)
+  - pass state to table
+  - table creates rows
+- Add new table row
+  - Prompt for company name
+  - create new state?
+
+- Create table row component
+  - Company name
+  - Generators
+    - count
+    - add button
+  - Foreign Keys 
+    - count
+    - add button
