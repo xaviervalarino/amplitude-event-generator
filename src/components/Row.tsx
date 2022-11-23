@@ -1,38 +1,13 @@
-import { useState, MouseEvent, useEffect } from "react";
+import { MouseEvent } from "react";
 import { track } from "@amplitude/analytics-browser";
 
-import './Row.css'
-
-enum EventType {
-    Generator = "Generators",
-    ForeignKey = "Foreign Keys",
-}
-
-function createPropsEffect(
-    prop: string,
-    state: string,
-    setState: React.Dispatch<string>
-) {
-    return useEffect(() => {
-        if (prop !== state) {
-            setState(prop);
-        }
-    }, [prop]);
-}
+import "./Row.css";
 
 export default function Row(props) {
-    const [generators, setGenerators] = useState(props.generators);
-    const [foreignKeys, setForeignKeys] = useState(props.foreignKeys);
-
-    createPropsEffect(props.generators, generators, setGenerators);
-    createPropsEffect(props.foreignKeys, foreignKeys, setForeignKeys);
-
-    const handleTrackEvent = (type: EventType, company: string) => {
+    const handleTrackEvent = (type: string, company: string) => {
         return (_: MouseEvent<HTMLButtonElement>) => {
             track(type, { company });
-            const dispatch =
-                type === "Generators" ? setGenerators : setForeignKeys;
-            dispatch((count: number) => count + 1);
+            props.dispatch(type);
         };
     };
 
@@ -40,17 +15,17 @@ export default function Row(props) {
         <tr>
             <td>{props.name}</td>
             <td>
-                {generators}
+                {props.generators}
                 <button
-                    onClick={handleTrackEvent(EventType.Generator, props.name)}
+                    onClick={handleTrackEvent("generators", props.name)}
                 >
                     +
                 </button>
             </td>
             <td>
-                {foreignKeys}
+                {props.foreignKeys}
                 <button
-                    onClick={handleTrackEvent(EventType.ForeignKey, props.name)}
+                    onClick={handleTrackEvent("foreignKeys", props.name)}
                 >
                     +
                 </button>
